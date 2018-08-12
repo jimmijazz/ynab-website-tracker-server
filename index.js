@@ -1,23 +1,60 @@
 const express = require('express');
 const app = express();
 const ynab = require('ynab');
-
+const mongodb = require('mongodb');
 var request = require('request');
 var path = require('path');
 var bodyParser = require('body-parser');
 var ejs = require('ejs');
 var awis = require('awis'); // Alexa web information services
-
+var bodyParser = require('body-parser');
 
 // TODO: move below into process env
 
 // TESTING VARIABLES TODO:REMOVE
 
 var loggedin = true;
-var accessToken = "726800adcbe96f7435c822451e2025f34b533180ce97d3447bb99bf6c3e99a66";
-var refreshAccessToken = "ad052ecd71ee56a40628b8d3fe50b69264614aea35d7ff377ee0f3c6d17c16d7"
+var accessToken = "";
+var refreshAccessToken = ""
 
 ///END TESTING VARIABLES
+
+
+app.set('views', __dirname + "/views");
+app.set('view engine', 'ejs');
+app.use(bodyParser()); // get information from html forms
+
+if(app.get('env') === 'development') {
+  // Local settings for testing
+  require('dotenv').config(); // Require local config file
+};
+
+// Configuration ===============================================================
+if(app.get('env') === 'development') {
+  // Settings for testing
+  require('dotenv').config(); // Require local config cile
+  port = 3000;
+  accessToken = process.env.accessToken;
+  refreshToken = process.env.refreshAccessToken
+
+} else {
+  // SETTINGS FOR PRODUCTION
+  port = process.env.PORT;
+};
+
+
+const mongoURI = process.env.MONGODB_URI;
+
+// CONNECT TO MONGODB
+mongodb.MongoClient.connect(mongoURI, function(err, database) {
+  if (err) {
+    console.log('Unable to connect to the database. Error: ', err);
+    process.exit(1);
+  } else {
+    db = database;
+    console.log('Database connection ready');
+  }
+});
 
 var refreshToken = function(callback) {
   console.log(refreshToken);
@@ -39,20 +76,7 @@ var refreshToken = function(callback) {
   });
 };
 
-// DETECT IF IT'S RUNNING ON LOCAL ENVIRONMENT OR HEROKU
-if (app.get('env') === 'development') {
-  // Settings for local
-  require('dotenv').config(); // Load env file
-  port = 3000;
-} else {
-  // Settings for Heroku
-  port = process.env.PORT;
-};
-
-
-app.set('views', __dirname + "/views");
-app.set('view engine', 'ejs');
-
+// Start views
 app.get('/', function(req, res) {
   res.send("hello");
 });
