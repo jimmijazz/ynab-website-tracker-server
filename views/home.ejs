@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Home</title>
+    <!-- Jquery -->
+    <script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+  </head>
+  <body>
+
+    <table id="budgetsTable">
+      <th>Budget Name</th>
+    </table>
+    </br>
+    <table id="categoriesTable">
+      <th>Categories</th>
+    </table>
+    <script type="text/javascript">
+
+      var budgets = $.parseJSON('<%-JSON.stringify(budgets)%>');
+      $(budgets).each(function(e){
+        $("#budgetsTable").append("<tr data-budget-id="+budgets[e]["id"] + " class='budgetRow'><td>"+budgets[e]["name"]+"</td></tr>")
+      });
+
+
+      $('.budgetRow').on('click', function(b) {
+        var budgetId = $(this).data("budget-id");
+        var url = "https://api.youneedabudget.com/v1/budgets/" + budgetId + "/categories?access_token=<%=token%>";
+        $.ajax({
+          method: "GET",
+          url: url,
+        }).done(function(data) {
+          // console.log(data);
+        // Add to categories table
+        $('#categoriesTable').find("tr").remove();
+        $(data["data"]["category_groups"]).each(function(i) {
+          var c = data["data"]["category_groups"][i]["categories"];
+          $(c).each(function(ii) {
+            var cName = data["data"]["category_groups"][i]["categories"][ii]["name"];
+            var cBudgeted = data["data"]["category_groups"][i]["categories"][ii]["budgeted"];
+
+            $("#categoriesTable").append("<tr><td>" + cName + cBudgeted + "</td></tr>");
+            console.log(data["data"]["category_groups"][i]["categories"]);
+          });
+
+        });
+      })
+    });
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,20 @@
+{
+  "name": "ynab-url-server",
+  "version": "1.0.0",
+  "description": "Server for YNAB URL tracker chrome extension",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Joshua D Bitossi",
+  "license": "ISC",
+  "dependencies": {
+    "awis": "^1.0.10",
+    "body-parser": "^1.18.3",
+    "ejs": "^2.6.1",
+    "express": "^4.16.3",
+    "path": "^0.12.7",
+    "request": "^2.87.0",
+    "ynab": "^1.1.0"
+  }
+}
