@@ -39,6 +39,17 @@ var refreshToken = function(callback) {
   });
 };
 
+// DETECT IF IT'S RUNNING ON LOCAL ENVIRONMENT OR HEROKU
+if (app.get('env') === 'development') {
+  // Settings for local
+  require('dotenv').config(); // Load env file
+  port = 3000;
+} else {
+  // Settings for Heroku
+  port = process.env.PORT;
+};
+
+
 app.set('views', __dirname + "/views");
 app.set('view engine', 'ejs');
 
@@ -163,4 +174,4 @@ app.get('/ynab_category_checker/:profile/:category', function(req, res) {
   res.send(200);
 });
 
-app.listen(3000, () => console.log('Example app listening on port 3000!'));
+app.listen(port, () => console.log('YNAB Web Tracker app listening on port' + port + '!'));
