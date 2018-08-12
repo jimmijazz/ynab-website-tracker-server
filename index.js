@@ -42,6 +42,10 @@ var refreshToken = function(callback) {
 app.set('views', __dirname + "/views");
 app.set('view engine', 'ejs');
 
+app.get('/', function(req, res) {
+  res.send("hello");
+});
+
 app.get('/ynab', function(req, res) {
 
   // TODO: add a db call here to see if the user exists in the db
