@@ -228,7 +228,7 @@ app.get('/ynab_home', function(req, res) {
 // });
 
 app.get('/ynab_redirect', function(req, res) {
-  var url = "https://app.youneedabudget.com/oauth/token?client_id=61640ecd06db3c2a208c94cf732a4ca2c3a9ce0b2260c5556197019f95aa5f75&client_secret=32d8b4dceb0e0046917ff370f95fc4ebfe9082ffcff6ec41c3b0796e4cf37ff7&redirect_uri=https://35f2c5a3.ngrok.io/ynab_redirect&grant_type=authorization_code&code=" + req.query.code
+  var url = "https://app.youneedabudget.com/oauth/token?client_id=61640ecd06db3c2a208c94cf732a4ca2c3a9ce0b2260c5556197019f95aa5f75&client_secret=32d8b4dceb0e0046917ff370f95fc4ebfe9082ffcff6ec41c3b0796e4cf37ff7&redirect_uri=https://ynab-website-tracker.herokuapp.com/ynab_redirect&grant_type=authorization_code&code=" + req.query.code
   // Activate the recieved code
   request({
     url : url,
